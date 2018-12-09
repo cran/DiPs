@@ -1,4 +1,4 @@
-085c901148f3d4999d4938ca41895199 *DESCRIPTION
+db4d0cfe05a030dbd9d9d2627427a3b1 *DESCRIPTION
 020f6d66a5a42530ac1e214cea60fce3 *LICENSE
 0f8f63e89f21fec134a3b43b3e546dd3 *NAMESPACE
 8a597565f5cb2c8f7ac7513ee5341878 *R/addDirectPenalty.R
@@ -6,8 +6,8 @@
 fecd64fda5042704d4bca8abcefdc026 *R/addcaliper.R
 093c6575cc5b955fe8b0f484c52b3402 *R/check.R
 0871723959186ac9eb3f3d92d1934868 *R/maha_dense.R
-1c6471f3b57e2e0bf2155eb287b608e4 *R/maha_sparse.R
-5ecbb842303e69f568583eca754ccef0 *R/match.R
+7d12cb98479b401c8e474be3ec12aab0 *R/maha_sparse.R
+4e8e034c3ccb406719d8a2a3ef7ae65e *R/match.R
 c1ae56f53518ad814a4a09f598d866ba *R/net.R
 24a76b55239382658b82eb094faa3eb0 *data/nh0506Homocysteine.rda
 60cb6b4efe62184429ab459f6c5e0cc7 *man/addDirectPenalty.Rd

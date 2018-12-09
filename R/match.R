@@ -2,7 +2,6 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
   #Check input
   stopifnot(is.data.frame(dat))
   stopifnot(is.vector(z))
-  stopifnot(is.vector(p))
   if (is.factor(fine)){
     levels(fine)<-1:nlevels(fine)
     fine<-as.integer(fine)
@@ -15,11 +14,8 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
   ntreat<-sum(z)
   ncontr<-sum(1-z)
   stopifnot(ncontr>=(ncontrol*ntreat))
-  stopifnot(length(z)==length(p))
   stopifnot(length(z)==length(fine))
 
-  stopifnot(is.matrix(X))
-  stopifnot(length(z)==(dim(X)[1]))
   stopifnot(length(z)==(dim(dat)[1]))
 
 
@@ -28,8 +24,6 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
   if(!(min(z[1:(n-1)]-z[2:n])>=0)){
     o<-order(1-z)
     z<-z[o]
-    p<-p[o]
-    X<-X[o,]
     dat<-dat[o,]
     fine<-fine[o]
   }

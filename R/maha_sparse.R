@@ -85,15 +85,15 @@ maha_sparse<-function(z,X,p=rep(1,length(z)),caliper=1,exact=NULL,nearexact=NULL
 
   n<-dim(X)[1]
 
-  # #Must have treated first
-  # if(!(min(z[1:(n-1)]-z[2:n])>=0)){
-  #   o<-order(1-z)
-  #   z<-z[o]
-  #   p<-p[o]
-  #   X<-X[o,]
-  #   if (!is.null(exact)) exact<-exact[o]
-  #   if (!is.null(nearexact)) nearexact<-nearexact[o]
-  # }
+  #Must have treated first
+  if(!(min(z[1:(n-1)]-z[2:n])>=0)){
+    o<-order(1-z)
+    z<-z[o]
+    p<-p[o]
+    X<-X[o,]
+    if (!is.null(exact)) exact<-exact[o]
+    if (!is.null(nearexact)) nearexact<-nearexact[o]
+  }
 
   # if (is.vector(X)) X<-matrix(X,ncol=1)
 
