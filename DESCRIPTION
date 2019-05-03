@@ -2,7 +2,7 @@ Package: DiPs
 Type: Package
 Title: Directional Penalties for Optimal Matching in Observational
         Studies
-Version: 0.2.0
+Version: 0.3.0
 Author: Ruoqi Yu
 Maintainer: Ruoqi Yu <ruoqiyu@wharton.upenn.edu>
 Description: Improves the balance of optimal matching with near-fine balance by giving penalties on the unbalanced covariates with the unbalanced directions. Many directional penalties can also be viewed as Lagrange multipliers, pushing a matched sample in the direction of satisfying a linear constraint that would not be satisfied without penalization.
@@ -19,6 +19,6 @@ Note: One minimum cost flow problem may have several or many solutions
         may have the minor consequence of altering which equivalent
         solution is produced.
 NeedsCompilation: no
-Packaged: 2018-12-08 22:38:38 UTC; Ruoqi Yu
+Packaged: 2019-05-03 14:45:48 UTC; ruoqi
 Repository: CRAN
-Date/Publication: 2018-12-09 05:10:03 UTC
+Date/Publication: 2019-05-03 16:20:08 UTC

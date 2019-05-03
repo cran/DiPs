@@ -71,7 +71,7 @@ maha_dense<-function (z, X, exact=NULL, nearexact=NULL, penalty=100){
   for (i in 1:m) out[i, ] <- mvnfast::maha(Xc,t(as.matrix(Xt[i,])),LL,isChol=TRUE)
   if (!is.null(exact)){
     dif <- outer(exact[z == 1], exact[z == 0], "!=")
-    out[diff] <- Inf
+    out[dif] <- Inf
   }
 
   if (!is.null(nearexact)){

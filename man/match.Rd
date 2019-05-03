@@ -19,11 +19,10 @@ penalty=round(max(dist$d)*10000), s.cost=100)
 If the match is infeasible, a warning is issued.  Otherwise, a list of results is returned.
 
 A match may be infeasible if the caliper on p is too small, or ncontrol is too large, or if exact matching for exact is impossible.
-\item{balance}{ Balance table of X using check().}
-\item{data}{The matched sample.  Selected rows of dat.}
-\item{Xm}{ The matched covariates matrix. Selected rows of X.}
-\item{zm}{ The matched treatment vector. A vector of 0 and 1. Select components of z.}
-\item{x}{ A vector of indicators whether each pair is in the matched data}
+
+\item{feasible}{ Indicator of whether matching is feasible or not.}
+\item{data}{ The matched sample, selected rows of dat.}
+\item{x}{ A vector of indicators of whether each treated-control pair is included in the matched sample.}
 }
 
 \description{

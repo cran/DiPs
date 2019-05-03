@@ -55,19 +55,15 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
     id0<-(1:n)[z==0]
     matchid<-matrix(c(id1[as.numeric(row.names(matches))], id0[as.vector((matches-sum(z)))]),ncol=ncontrol+1)
     matchid<-as.vector(t(matchid))
-    if (is.vector(X)) X<-matrix(X,length(X),1)
     dat1<-dat[matchid,]
-    Xm<-X[matchid,]
     zm<-z[matchid]
     mset<-rep(1:ntreat,each=ncontrol+1)
     dat1<-cbind(mset,dat1)
-    m<-list(feasible=output$feasible,d=dat1,Xm=Xm,zm=zm,x=x)
+    m<-list(feasible=output$feasible,data=dat1,x=x)
   }
   #m<-nearfine(z,dist,dat,X,ncontrol,fine,penalty,max.cost,nearexPenalty,dx,disto)
   if(m[[1]]==0) {
     warning("The match you requested is infeasible, reconsider caliper or ncontrol or exact for distance.")
-  }else{
-    balance<-check(X,m$Xm,z,m$zm)
-    list(balance=balance,data=m$d,Xm=m$X,zm=m$zm,x=x)
   }
+  m
 }
