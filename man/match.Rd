@@ -47,8 +47,14 @@ X<-cbind(female,age,black,education,povertyr,bmi)
 p<-glm(z~female+age+black+education+povertyr+bmi,family=binomial)$fitted.values
 d<-cbind(nh0506Homocysteine,p)
 detach(nh0506Homocysteine)
-dist<-maha_sparse(d$z,X,p,0.15)
-o<-match(d$z, d$education, dist, d)
+dist<-maha_dense(d$z,X)
+dist$d<-dist$d+1000*as.numeric(dist$d>7)
+dist<-addcaliper(dist, d$z, d$p, c(-.5,.15), stdev = TRUE, penalty = 1000)
+dist<-addMagnitudePenalty(dist, d$z, d$p, positive=TRUE, multiplier = 20)
+dist<-addDirectPenalty(dist, d$z, d$p, positive=TRUE, penalty = 1)
+dist<-addDirectPenalty(dist, d$z, d$black, positive=FALSE, penalty = 2)
+dist<-addDirectPenalty(dist, d$z, d$bmi, positive=FALSE, penalty=2)
+dist<-addDirectPenalty(dist, d$z, d$female, positive=FALSE, penalty=4)
 md<-o$data
 head(md)
 }

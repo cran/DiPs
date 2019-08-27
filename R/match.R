@@ -22,6 +22,9 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
   #Must have treated first
   n<-length(z)
   if(!(min(z[1:(n-1)]-z[2:n])>=0)){
+    warning("Your input data has been sorted to place treated (z=1) subjects first.  This was done in an effort
+            to maintain compatibility between dist and rownames of dat,
+            assuming the distance dist was built using maha_dense or maha_sparse.")
     o<-order(1-z)
     z<-z[o]
     dat<-dat[o,]
@@ -34,6 +37,7 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
   }
 
   net<-net(z,dist,ncontrol,fine,penalty,s.cost)
+  if (any(net$cost==Inf)) net$cost[net$cost==Inf]<-2*max(net$cost[net$cost!=Inf])
   output<-rcbalance::callrelax(net)
   if (output$feasible!=1){
     warning("Match is infeasible.  Change dist or ncontrol to obtain a feasible match.")
