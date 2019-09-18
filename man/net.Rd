@@ -3,7 +3,7 @@
 \title{Optimal near-fine match from a distance matrix.}
 \usage{
 net(z, dist, ncontrol=1, fine=rep(1,length(z)),
-penalty=round(max(dist$d)*10000), s.cost=100)
+penalty=round(max(dist$d)*10000), s.cost=100, subX=NULL)
 }
 \arguments{
 \item{z}{ A vector whose ith coordinate is 1 for a treated unit and is 0 for a control. }
@@ -12,6 +12,7 @@ penalty=round(max(dist$d)*10000), s.cost=100)
 \item{fine}{ A vector of with length(z)=length(fine) giving the nominal levels that are to be nearly-finely balanced.}
 \item{penalty}{ A numeric penalty imposed for each violation of fine balance.}
 \item{s.cost}{ The scaling factor for cost of the each pair of treated and control while rounding the cost. }
+\item{subX}{ If a subset matching is required, the variable that the subset matching is based on. That is, for each level of subX, extra treated will be discarded in order to have the number of matched treated subjects being the minimum size of treated and control groups. If exact matching on a variable x is desired and discarding extra treated is fine if there are more treated than controls for a certain level k, set exact=x, subX=x.}
 }
 \value{ A network for optimal near-fine matching.}
 \description{

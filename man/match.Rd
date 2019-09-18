@@ -3,7 +3,7 @@
 \title{Minimum-distance near-fine matching.}
 \usage{
 match(z, fine=rep(1,length(z)), dist, dat, ncontrol=1,
-penalty=round(max(dist$d)*10000), s.cost=100)
+penalty=round(max(dist$d)*10000), s.cost=100, subX=NULL)
 }
 \arguments{
 \item{z}{ A vector whose ith coordinate is 1 for a treated unit and is 0 for a control.}
@@ -13,6 +13,7 @@ penalty=round(max(dist$d)*10000), s.cost=100)
 \item{ncontrol}{ A positive integer giving the number of controls to be matched to each treated subject.  If ncontrol is too large, the match will be infeasible.}
 \item{penalty}{ A numeric penalty imposed for each violation of fine balance.}
 \item{s.cost}{ The scaling factor for cost of the each pair of treated and control while rounding the cost.}
+\item{subX}{ If a subset matching is required, the variable that the subset matching is based on. That is, for each level of subX, extra treated will be discarded in order to have the number of matched treated subjects being the minimum size of treated and control groups. If exact matching on a variable x is desired and discarding extra treated is fine if there are more treated than controls for a certain level k, set exact=x, subX=x.}
 }
 
 \value{
@@ -55,6 +56,7 @@ dist<-addDirectPenalty(dist, d$z, d$p, positive=TRUE, penalty = 1)
 dist<-addDirectPenalty(dist, d$z, d$black, positive=FALSE, penalty = 2)
 dist<-addDirectPenalty(dist, d$z, d$bmi, positive=FALSE, penalty=2)
 dist<-addDirectPenalty(dist, d$z, d$female, positive=FALSE, penalty=4)
+o<-match(d$z, d$education, dist, d, ncontrol = 2)
 md<-o$data
 head(md)
 }

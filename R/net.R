@@ -1,4 +1,4 @@
-net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*10000),s.cost=100){
+net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*10000),s.cost=100,subX=NULL){
 
   #check input
   stopifnot(is.vector(z))
@@ -12,9 +12,21 @@ net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*
   stopifnot(ncontr>=(ncontrol*ntreat))
   stopifnot(nobs==length(fine))
 
+  if (!is.null(subX)){
+    if (is.factor(subX)){
+      levels(subX)<-1:nlevels(subX)
+      subX<-as.integer(subX)
+    }
+    stopifnot(is.vector(subX))
+  }
+
   #create basic treated-vs-control bipartite graph
   fine1=fine[z==1]
   fine0=fine[z==0]
+  if (!is.null(subX)){
+    subX1<-subX[z==1]
+    subX0<-subX[z==0]
+  }
   startn<-dist$start
   endn<-dist$end
   cost<-dist$d
@@ -33,6 +45,32 @@ net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*
   cost=c(cost,rep(0,ncontr))
   ucap=c(ucap,rep(1,ncontr))
   b<-c(b,rep(0,ncontr))
+
+  #Add a node to take extras of subset for fine balance category k
+  if (!is.null(subX)){
+    tbs<-table(z,subX)
+    ncs<-as.vector(tbs[1,])
+    nts<-as.vector(tbs[2,])
+    nwants<-nts*ncontrol #desired number
+    nlows<-pmin(ncs,nwants) #available number
+    nextras<-nwants-nlows #gap between desired and available
+    sublevels<-as.vector(as.numeric(colnames(tbs)))
+    extras<-c()
+    for (kk in 1:length(nlows)){
+      if (nextras[kk]>0){
+        extrak<-length(b)+1
+        extras<-c(extras,extrak)
+        b<-c(b,0)
+        who<-subX1==sublevels[kk]
+        if (sum(who)>0){
+          startn<-c(startn,which(who))
+          endn<-c(endn,rep(extrak,sum(who)))
+          ucap<-c(ucap,rep(1,sum(who)))
+          cost<-c(cost,rep(0,sum(who)))
+        }
+      }
+    }
+  }
 
   #Add structure to the bipartite graph for near fine balance
 
@@ -77,6 +115,13 @@ net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*
   endn<-c(endn,rep(finalsink,length(sinks)))
   ucap<-c(ucap,nlow[nlow>0])
   cost<-c(cost,rep(0,length(sinks)))
+
+  if(!is.null(subX)){
+    startn<-c(startn,extras)
+    endn<-c(endn,rep(finalsink,length(extras)))
+    ucap<-c(ucap,nextras[nextras>0])
+    cost<-c(cost,rep(0,length(extras)))
+  }
 
   #Connect sinkex to finalsink
   startn<-c(startn,sinkex)

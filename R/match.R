@@ -1,4 +1,4 @@
-match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(dist$d)*10000),s.cost=100){
+match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(dist$d)*10000),s.cost=100,subX=NULL){
   #Check input
   stopifnot(is.data.frame(dat))
   stopifnot(is.vector(z))
@@ -18,17 +18,22 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
 
   stopifnot(length(z)==(dim(dat)[1]))
 
+  if (!is.null(subX)){
+    if (is.factor(subX)){
+      levels(subX)<-1:nlevels(subX)
+      subX<-as.integer(subX)
+    }
+    stopifnot(is.vector(subX))
+  }
 
   #Must have treated first
   n<-length(z)
   if(!(min(z[1:(n-1)]-z[2:n])>=0)){
-    warning("Your input data has been sorted to place treated (z=1) subjects first.  This was done in an effort
-            to maintain compatibility between dist and rownames of dat,
-            assuming the distance dist was built using maha_dense or maha_sparse.")
     o<-order(1-z)
     z<-z[o]
     dat<-dat[o,]
     fine<-fine[o]
+    if (!is.null(subX)) subX<-subX[o]
   }
 
   #do match
@@ -36,7 +41,7 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
     stop("Error: package optmatch (>= 0.9-1) not loaded.  To run rcbalance command, you must install optmatch first and agree to the terms of its license.")
   }
 
-  net<-net(z,dist,ncontrol,fine,penalty,s.cost)
+  net<-net(z,dist,ncontrol,fine,penalty,s.cost,subX)
   if (any(net$cost==Inf)) net$cost[net$cost==Inf]<-2*max(net$cost[net$cost!=Inf])
   output<-rcbalance::callrelax(net)
   if (output$feasible!=1){
@@ -48,20 +53,20 @@ match<-function(z,fine=rep(1,length(z)),dist,dat,ncontrol=1,penalty=round(max(di
     control<-net$endn[1:net$tcarcs]
     match.df<-data.frame('treat' = treated, 'x' = x, 'control' = control)
     matched.or.not<-plyr::daply(match.df, plyr::.(match.df$treat),
-                                  function(treat.edges) c(as.numeric(as.character(treat.edges$treat[1])), sum(treat.edges$x)), .drop_o = FALSE)
+                                function(treat.edges) c(as.numeric(as.character(treat.edges$treat[1])), sum(treat.edges$x)), .drop_o = FALSE)
     if(any(matched.or.not[,2] == 0)){
       match.df<-match.df[-which(match.df$treat %in% matched.or.not[which(matched.or.not[,2] == 0),1]),]
     }
     match.df$treat<-as.factor(as.character(match.df$treat))
     matches<-as.matrix(plyr::daply(match.df, plyr::.(match.df$treat),
-                                     function(treat.edges) treat.edges$control[treat.edges$x == 1], .drop_o = FALSE))
+                                   function(treat.edges) treat.edges$control[treat.edges$x == 1], .drop_o = FALSE))
     id1<-(1:n)[z==1]
     id0<-(1:n)[z==0]
     matchid<-matrix(c(id1[as.numeric(row.names(matches))], id0[as.vector((matches-sum(z)))]),ncol=ncontrol+1)
     matchid<-as.vector(t(matchid))
     dat1<-dat[matchid,]
     zm<-z[matchid]
-    mset<-rep(1:ntreat,each=ncontrol+1)
+    mset<-rep(1:nrow(matches),each=ncontrol+1)
     dat1<-cbind(mset,dat1)
     m<-list(feasible=output$feasible,data=dat1,x=x)
   }

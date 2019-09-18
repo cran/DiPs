@@ -1,4 +1,4 @@
-9d269cc91d5d58002a2beb1a2cad1599 *DESCRIPTION
+cb68f35043979c087dd036b18026f792 *DESCRIPTION
 1722c56f0f7a457c8aaaf5fcb8771648 *LICENSE
 0f8f63e89f21fec134a3b43b3e546dd3 *NAMESPACE
 8a597565f5cb2c8f7ac7513ee5341878 *R/addDirectPenalty.R
@@ -7,8 +7,8 @@ fecd64fda5042704d4bca8abcefdc026 *R/addcaliper.R
 093c6575cc5b955fe8b0f484c52b3402 *R/check.R
 62518e59c366e4c31c9a318300182313 *R/maha_dense.R
 7d12cb98479b401c8e474be3ec12aab0 *R/maha_sparse.R
-3c25a4721e14857cec86b7a468da69a4 *R/match.R
-c1ae56f53518ad814a4a09f598d866ba *R/net.R
+1a679675a9a0755cf914643c7d56b3e3 *R/match.R
+d041ff2733dc16cc10ab4bec6a4003cd *R/net.R
 24a76b55239382658b82eb094faa3eb0 *data/nh0506Homocysteine.rda
 60cb6b4efe62184429ab459f6c5e0cc7 *man/addDirectPenalty.Rd
 fb644f4c7c53312952e71b98479f57ec *man/addMagnitudePenalty.Rd
@@ -16,6 +16,6 @@ fd2e6d5852de7a6791a173dd6ed32a05 *man/addcaliper.Rd
 4a36d4a21d9a4b33bf064c082d80ade2 *man/check.Rd
 5e4291430bdf464acd4498f6d60d2d95 *man/maha_dense.Rd
 c5a68cba3c9739178e22d35224072797 *man/maha_sparse.Rd
-cd7597463a87b9006740eb490a1267ca *man/match.Rd
-55c8a2bffc82ccb039c5d74986d11150 *man/net.Rd
+2b426a8e192f8e3707412a3e34fe4b54 *man/match.Rd
+c002688f1ec36a7ef781662c3b29cff0 *man/net.Rd
 683f3239f07ddc3b279721e75053207b *man/nh0506Homocysteine.Rd
