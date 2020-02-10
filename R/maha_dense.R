@@ -67,6 +67,8 @@ maha_dense<-function (z, X, exact=NULL, nearexact=NULL, penalty=100){
   out <- matrix(NA, m, n - m)
   Xc <- X[z == 0, ]
   Xt <- X[z == 1, ]
+  if (is.vector(Xc)) Xc<-matrix(Xc,ncol = 1)
+  if (is.vector(Xt)) Xt<-matrix(Xt,ncol = 1)
   rownames(out) <- rownames(X)[z == 1]
   colnames(out) <- rownames(X)[z == 0]
   for (i in 1:m) out[i, ] <- mvnfast::maha(Xc,t(as.matrix(Xt[i,])),LL,isChol=TRUE)

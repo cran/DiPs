@@ -2,14 +2,16 @@
 \alias{match}
 \title{Minimum-distance near-fine matching.}
 \usage{
-match(z, fine=rep(1,length(z)), dist, dat, ncontrol=1,
-penalty=round(max(dist$d)*10000), s.cost=100, subX=NULL)
+match(z,p,dist,dat,exact=NULL,fine=rep(1,length(z)),ncontrol=1,
+penalty=round(max(dist$d)*1000),s.cost=100,subX=NULL)
 }
 \arguments{
 \item{z}{ A vector whose ith coordinate is 1 for a treated unit and is 0 for a control.}
-\item{fine}{ A vector of with length(z)=length(fine) giving the nominal levels that are to be nearly-finely balanced.}
+\item{p}{ A vector of length(z)=length(p) giving the variable used to define the caliper.  Typically, p is the propensity score or its rank.}
 \item{dist}{ A distance object with three components: d, start, end, typically created by maha_dense or maha_sparse. d[i] gives the distance between the (start[i])th treated and the (end[i]-sum(z))th control.}
 \item{dat}{ A data frame with length(z) rows.  If the match is feasible, the matched portion of dat is returned with additional columns that define the match.}
+\item{exact}{ If not NULL, then a vector of length(z)=length(p) giving variable that need to be exactly matched. }
+\item{fine}{ A vector of with length(z)=length(fine) giving the nominal levels that are to be nearly-finely balanced.}
 \item{ncontrol}{ A positive integer giving the number of controls to be matched to each treated subject.  If ncontrol is too large, the match will be infeasible.}
 \item{penalty}{ A numeric penalty imposed for each violation of fine balance.}
 \item{s.cost}{ The scaling factor for cost of the each pair of treated and control while rounding the cost.}
@@ -19,7 +21,7 @@ penalty=round(max(dist$d)*10000), s.cost=100, subX=NULL)
 \value{
 If the match is infeasible, a warning is issued.  Otherwise, a list of results is returned.
 
-A match may be infeasible if the caliper on p is too small, or ncontrol is too large, or if exact matching for exact is impossible.
+A match may be infeasible if the caliper or constant on p is too small, or ncontrol is too large, or if exact matching for exact is impossible.
 
 \item{feasible}{ Indicator of whether matching is feasible or not.}
 \item{data}{ The matched sample, selected rows of dat.}
@@ -56,7 +58,7 @@ dist<-addDirectPenalty(dist, d$z, d$p, positive=TRUE, penalty = 1)
 dist<-addDirectPenalty(dist, d$z, d$black, positive=FALSE, penalty = 2)
 dist<-addDirectPenalty(dist, d$z, d$bmi, positive=FALSE, penalty=2)
 dist<-addDirectPenalty(dist, d$z, d$female, positive=FALSE, penalty=4)
-o<-match(d$z, d$education, dist, d, ncontrol = 2)
+o<-match(d$z, d$p, dist, d, fine=d$education, ncontrol = 2)
 md<-o$data
 head(md)
 }

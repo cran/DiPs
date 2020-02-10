@@ -1,4 +1,4 @@
-net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*10000),s.cost=100,subX=NULL){
+net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*100),s.cost=100,subX=NULL){
 
   #check input
   stopifnot(is.vector(z))
@@ -126,8 +126,8 @@ net<-function(z,dist,ncontrol=1,fine=rep(1,length(z)),penalty=round(max(dist$d)*
   #Connect sinkex to finalsink
   startn<-c(startn,sinkex)
   endn<-c(endn,finalsink)
-  #ucap<-c(ucap,ntreat*ncontrol)
-  ucap<-c(ucap,nextra)
+  ucap<-c(ucap,ntreat*ncontrol)
+  #ucap<-c(ucap,nextra)
   cost<-c(cost,penalty)
 
   #Make costs integer
