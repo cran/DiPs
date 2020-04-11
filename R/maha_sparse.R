@@ -1,4 +1,4 @@
-maha_sparse<-function(z,X,p=rep(1,length(z)),caliper=1,stdev=F,constant=NULL,ncontrol=1,exact=NULL,nearexact=NULL,penalty=100,subX=NULL,ties.all=T){
+maha_sparse<-function(z,X,p=rep(1,length(z)),caliper=1,stdev=FALSE,constant=NULL,ncontrol=1,exact=NULL,nearexact=NULL,penalty=100,subX=NULL,ties.all=TRUE){
   Xmatrix<-function(x){
     if (is.vector(x) || is.factor(x)) x<-matrix(x,nrow=length(z))
 
@@ -125,10 +125,11 @@ maha_sparse<-function(z,X,p=rep(1,length(z)),caliper=1,stdev=F,constant=NULL,nco
   #get rid of duplicated columns
   X <- X[,!duplicated(t(X))]
   #keep only linearly independent columns
-  X<-cbind(rep(1,nrow(X)),X)
+  X<-cbind(rep(1,length(z)),X)
   q <- qr(X)
   X <- X[,q$pivot[seq(q$rank)]]
   X <- X[,-1]
+  if (is.vector(X)) X=matrix(X,nrow=length(z))
   cv<-stats::cov(X)
   vuntied<-stats::var(1:n)
   rat<-sqrt(vuntied/diag(cv))

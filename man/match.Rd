@@ -2,14 +2,14 @@
 \alias{match}
 \title{Minimum-distance near-fine matching.}
 \usage{
-match(z,p,dist,dat,exact=NULL,fine=rep(1,length(z)),ncontrol=1,
+match(z,dist,dat,p=rep(1,length(z)),exact=NULL,fine=rep(1,length(z)),ncontrol=1,
 penalty=round(max(dist$d)*1000),s.cost=100,subX=NULL)
 }
 \arguments{
 \item{z}{ A vector whose ith coordinate is 1 for a treated unit and is 0 for a control.}
-\item{p}{ A vector of length(z)=length(p) giving the variable used to define the caliper.  Typically, p is the propensity score or its rank.}
 \item{dist}{ A distance object with three components: d, start, end, typically created by maha_dense or maha_sparse. d[i] gives the distance between the (start[i])th treated and the (end[i]-sum(z))th control.}
 \item{dat}{ A data frame with length(z) rows.  If the match is feasible, the matched portion of dat is returned with additional columns that define the match.}
+\item{p}{ A vector of length(z)=length(p) giving the variable used to define the caliper.  Typically, p is the propensity score or its rank. If the dense match is performed, use the default p=rep(1,length(z)).}
 \item{exact}{ If not NULL, then a vector of length(z)=length(p) giving variable that need to be exactly matched. }
 \item{fine}{ A vector of with length(z)=length(fine) giving the nominal levels that are to be nearly-finely balanced.}
 \item{ncontrol}{ A positive integer giving the number of controls to be matched to each treated subject.  If ncontrol is too large, the match will be infeasible.}
@@ -52,13 +52,13 @@ d<-cbind(nh0506Homocysteine,p)
 detach(nh0506Homocysteine)
 dist<-maha_dense(d$z,X)
 dist$d<-dist$d+1000*as.numeric(dist$d>7)
-dist<-addcaliper(dist, d$z, d$p, c(-.5,.15), stdev = TRUE, penalty = 1000)
-dist<-addMagnitudePenalty(dist, d$z, d$p, positive=TRUE, multiplier = 20)
-dist<-addDirectPenalty(dist, d$z, d$p, positive=TRUE, penalty = 1)
-dist<-addDirectPenalty(dist, d$z, d$black, positive=FALSE, penalty = 2)
+dist<-addcaliper(dist, d$z, d$p, c(-.5,.15), stdev=TRUE, penalty=1000)
+dist<-addMagnitudePenalty(dist, d$z, d$p, positive=TRUE, multiplier=20)
+dist<-addDirectPenalty(dist, d$z, d$p, positive=TRUE, penalty=1)
+dist<-addDirectPenalty(dist, d$z, d$black, positive=FALSE, penalty=2)
 dist<-addDirectPenalty(dist, d$z, d$bmi, positive=FALSE, penalty=2)
 dist<-addDirectPenalty(dist, d$z, d$female, positive=FALSE, penalty=4)
-o<-match(d$z, d$p, dist, d, fine=d$education, ncontrol = 2)
+o<-match(d$z, dist, d, fine=d$education, ncontrol=2)
 md<-o$data
 head(md)
 }

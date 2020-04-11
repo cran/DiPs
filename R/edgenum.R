@@ -1,4 +1,4 @@
-edgenum<-function(z,p,caliper,constant=NULL,exact=NULL,ties.all=T){
+edgenum<-function(z,p,caliper,constant=NULL,exact=NULL,ties.all=TRUE){
 
   stopifnot(is.vector(z))
   stopifnot(all((z==1)|(z==0)))

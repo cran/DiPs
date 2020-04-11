@@ -51,12 +51,37 @@ maha_dense<-function (z, X, exact=NULL, nearexact=NULL, penalty=100){
   }
 
   X<-Xmatrix(X)
-  if (is.vector(X)) X<-matrix(X,length(X),1)
+  if (is.vector(X)) X<-matrix(X,length(z),1)
   stopifnot(is.matrix(X))
   n <- dim(X)[1]
   rownames(X) <- 1:n
   k <- dim(X)[2]
   m <- sum(z)
+
+  p=rep(1,length(z))
+  #sort input
+  if (is.null(exact)){
+    o<-order(1-p)
+  }else{
+    o<-order(exact,1-p)
+    exact<-exact[o]
+  }
+
+  z<-z[o]
+  p<-p[o]
+  X<-X[o,]
+  if (!is.null(nearexact)) nearexact<-nearexact[o]
+
+  #Must have treated first
+  if(!(min(z[1:(n-1)]-z[2:n])>=0)){
+    o<-order(1-z)
+    z<-z[o]
+    p<-p[o]
+    X<-X[o,]
+    if (!is.null(exact)) exact<-exact[o]
+    if (!is.null(nearexact)) nearexact<-nearexact[o]
+  }
+
   for (j in 1:k) X[, j] <- rank(X[, j])
   cv <- cov(X)
   vuntied <- var(1:n)
@@ -82,7 +107,14 @@ maha_dense<-function (z, X, exact=NULL, nearexact=NULL, penalty=100){
     dif <- outer(nearexact[z == 1], nearexact[z == 0], "!=")
     out <- out + dif * penalty
   }
-  d<-t(out)
-  dim(d)=c(1,m*(n-m))
-  list(d=as.vector(d),start=rep(1:m,each=n-m),end=rep((m+1):n,m))
+  distance<-t(out)
+  dim(distance)<-c(1,m*(n-m))
+  distance<-as.vector(distance)
+  start<-rep(1:m,each=n-m)
+  end<-rep((m+1):n,m)
+  d0<-distance
+  distance<-distance[which(d0<Inf)]
+  start<-start[which(d0<Inf)]
+  end<-end[which(d0<Inf)]
+  list(d=distance,start=start,end=end)
 }

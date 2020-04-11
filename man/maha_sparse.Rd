@@ -2,8 +2,8 @@
 \alias{maha_sparse}
 \title{Creates a robust Mahalanobis distance for matching based on a sparse network.}
 \usage{
-maha_sparse(z,X,p=rep(1,length(z)),caliper=1,stdev=F,constant=NULL,ncontrol=1,
-exact=NULL,nearexact=NULL,penalty=100,subX=NULL,ties.all=T)
+maha_sparse(z,X,p=rep(1,length(z)),caliper=1,stdev=FALSE,constant=NULL,ncontrol=1,
+exact=NULL,nearexact=NULL,penalty=100,subX=NULL,ties.all=TRUE)
 }
 \arguments{
 \item{z}{ A vector whose ith coordinate is 1 for a treated unit and is 0 for a control. }

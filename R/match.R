@@ -1,4 +1,4 @@
-match<-function(z,p,dist,dat,exact=NULL,fine=rep(1,length(z)),ncontrol=1,penalty=round(max(dist$d)*1000),s.cost=100,subX=NULL){
+match<-function(z,dist,dat,p=rep(1,length(z)),exact=NULL,fine=rep(1,length(z)),ncontrol=1,penalty=round(max(dist$d)*1000),s.cost=100,subX=NULL){
   #Check input
   stopifnot(is.data.frame(dat))
   stopifnot(is.vector(z))
@@ -101,10 +101,11 @@ match<-function(z,p,dist,dat,exact=NULL,fine=rep(1,length(z)),ncontrol=1,penalty
     dat1<-dat[matchid,]
     zm<-z[matchid]
     mset<-rep(1:nrow(matches),each=ncontrol+1)
-    dat1<-cbind(mset,dat1)
+    dat1$mset<-mset
+    #dat1<-cbind(mset,dat1)
     m<-list(feasible=output$feasible,data=dat1,x=x)
   }
-  #m<-nearfine(z,dist,dat,X,ncontrol,fine,penalty,max.cost,nearexPenalty,dx,disto)
+
   if(m[[1]]==0) {
     warning("The match you requested is infeasible, reconsider caliper or ncontrol or exact for distance.")
   }

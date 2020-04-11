@@ -3,7 +3,7 @@
 \title{Computes the number of edges in the reduced bipartite graph.}
 \usage{
 edgenum(z, p, caliper, constant=NULL, exact=NULL,
-ties.all=T)
+ties.all=TRUE)
 }
 \arguments{
 \item{z}{ A vector whose ith coordinate is 1 for a treated unit and is 0 for a control. }
