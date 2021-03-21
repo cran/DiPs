@@ -69,6 +69,7 @@ maha_dense<-function (z, X, exact=NULL, nearexact=NULL, penalty=100){
 
   z<-z[o]
   p<-p[o]
+  if (is.vector(X)) X<-matrix(X,length(z),1)
   X<-X[o,]
   if (!is.null(nearexact)) nearexact<-nearexact[o]
 
@@ -77,11 +78,13 @@ maha_dense<-function (z, X, exact=NULL, nearexact=NULL, penalty=100){
     o<-order(1-z)
     z<-z[o]
     p<-p[o]
+    if (is.vector(X)) X<-matrix(X,length(z),1)
     X<-X[o,]
     if (!is.null(exact)) exact<-exact[o]
     if (!is.null(nearexact)) nearexact<-nearexact[o]
   }
 
+  if (is.vector(X)) X<-matrix(X,length(z),1)
   for (j in 1:k) X[, j] <- rank(X[, j])
   cv <- cov(X)
   vuntied <- var(1:n)
